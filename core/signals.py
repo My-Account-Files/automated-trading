@@ -5,4 +5,5 @@ from django.dispatch import receiver
 @receiver(post_save, sender=User)
 def create_userdetails(sender, instance, created, **kwargs):
     if created:
+        print("HEY")
         UserDetail.objects.create(user=instance)
