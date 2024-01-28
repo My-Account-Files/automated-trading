@@ -37,6 +37,11 @@ def signup(request):
             
     return render(request, 'pages/signup.html', context)
 
+#  < -- Dashboard --->
+def dashboard(request):
+            
+    return render(request, 'pages/dashboard.html', context)
+
 def email_exist(email):
     return User.objects.filter(email=email).exists()
 
