@@ -1,0 +1,16 @@
+.gradient {
+    background: linear-gradient(93deg, #8d0062 0%, #000 100%);
+  }
+  .background-color {
+    background-color: #FFF2E1;   
+  }
+  .submit-btn {
+    background-color: #F48C06 !important;
+  }
+
+  .link-color {
+      color: #F48C06
+  }
+  .w-100 {
+      width: 100% !important;
+  }
