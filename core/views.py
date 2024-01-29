@@ -39,8 +39,7 @@ def signup(request):
 
 #  < -- Dashboard --->
 def dashboard(request):
-            
-    return render(request, 'pages/dashboard.html', context)
+    return render(request, 'pages/comingsoon.html')
 
 def email_exist(email):
     return User.objects.filter(email=email).exists()
@@ -67,17 +66,14 @@ def signin(request):
     if request.method == "POST":
         email  = request.POST.get('email')
         password = request.POST.get('password')
-
-
         current_user = User.objects.filter(username=email)
         if current_user.exists():
             current_user = current_user.first()
-            auth_user = authenticate(username=current_user.username, password=password)
-
+            auth_user = current_user.check_password(password)
             if auth_user is None:
                 messages.error(request, "Invalid username or password")
             else:
-                send_verification_code(auth_user)
+                send_verification_code(current_user)
                 context['code_send'] = True
                 context['hidden_email'] = email
                 messages.success(request, "Verification code has been sent")
@@ -94,8 +90,6 @@ def verify_otp(request):
         current_user_details = UserDetail.objects.get(user=current_user)
         if request.method == 'POST':
             otp = request.POST.get('code')
-            print(otp, current_user_details.otp)
-
             if current_user_details.otp == otp:
                 messages.success(request, "User verified!")
                 if current_user.is_active == False:
