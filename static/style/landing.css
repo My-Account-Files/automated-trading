@@ -3,6 +3,10 @@
     background-color: #FFF2E1;
 }
 
+.img-border {
+    border-radius: 4%;
+}
+
 /*font*/
 body {
     font-family: 'Poppins', sans-serif;
