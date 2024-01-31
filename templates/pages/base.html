@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block meta_description %}Your default meta description goes here.{% endblock %}">
     <meta name="author" content="{% block meta_author %}Tayyab ur Rehman{% endblock %}">
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--External files link-->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'style/landing.css' %}">
     <link rel="stylesheet" href="{% static 'style/application.css' %}">
-
-    <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Tailwind -->
-	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!--Tailwind -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
 	<!-- Alpine -->
 	<script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
 	<script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script>
@@ -27,7 +27,7 @@
     
 
     <title>{% block title %}Your Django App{% endblock %}</title>
-    {% block css %}{% endblock %}
+    {% block head %}{% endblock %}
 
 </head>
 

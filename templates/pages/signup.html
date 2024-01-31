@@ -10,7 +10,7 @@
 {% if code_send %}
   {% include "../pages/verify-otp.html" with messages=messages %}
 {% else %}
-<div class="min-h-screen pt-4 background-color">
+<div class="min-h-screen background-color">
     <!-- Container -->
     <div class="mx-auto">
         <!-- Form Container -->
@@ -77,12 +77,13 @@
                     </form>
                 </div>
             </div>
-            <!--Image Container-->
-            <div class="hidden sm:block w-100 lg:w-7/12 bg-white rounded-lg lg:rounded-l-none">
-                <div class="w-100 lg:w-7/12 bg-white rounded-lg lg:rounded-l-none">
-                    <img class="w-100" src="{% static 'images/trading.jpg' %}" alt="Automated Trading">
+            <!-- Image Container -->
+            <div class="hidden sm:flex w-100 lg:w-7/12 bg-white items-center justify-center">
+                <div class="w-100 lg:w-7/12 bg-white">
+                    <img class="w-full rounded-md" src="{% static 'images/sign-up.jpg' %}" alt="Automated Trading">
                 </div>
             </div>
+
         </div>
     </div>
 {% endif %}

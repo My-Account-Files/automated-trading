@@ -20,6 +20,7 @@ def decrypt_data(encrypted_data, key):
 
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=255, null=True, blank=True)
     zerodha_key = models.CharField(max_length=255, null=True, blank=True)
     icici_key = models.CharField(max_length=255, null=True, blank=True)
@@ -41,4 +42,6 @@ class UserDetail(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
     

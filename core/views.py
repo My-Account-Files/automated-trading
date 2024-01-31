@@ -19,7 +19,7 @@ def signup(request):
     context={}
     if request.method == 'POST':
         email = request.POST.get('email')
-        username = email
+        username = email.split('@')[0]
         first_name = request.POST.get('firstname')
         last_name = request.POST.get('lastname')
         password = request.POST.get('password')
@@ -28,9 +28,8 @@ def signup(request):
             messages.error(request, "Email already exists!")
             return render(request, 'pages/signup.html')
 
-        user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password, is_active=False)
+        user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
         send_verification_code(user)
-        login(request, user)
         context['code_send'] = True
         context['hidden_email'] = email
         messages.success(request, "Verification code has been sent")
@@ -66,14 +65,15 @@ def signin(request):
     if request.method == "POST":
         email  = request.POST.get('email')
         password = request.POST.get('password')
-        current_user = User.objects.filter(username=email)
+        username = email.split('@')[0]
+        current_user = User.objects.filter(username=username)
         if current_user.exists():
             current_user = current_user.first()
-            auth_user = current_user.check_password(password)
+            auth_user = authenticate(username=current_user.username, password=password)
             if auth_user is None:
                 messages.error(request, "Invalid username or password")
             else:
-                send_verification_code(current_user)
+                send_verification_code(auth_user)
                 context['code_send'] = True
                 context['hidden_email'] = email
                 messages.success(request, "Verification code has been sent")
@@ -92,9 +92,8 @@ def verify_otp(request):
             otp = request.POST.get('code')
             if current_user_details.otp == otp:
                 messages.success(request, "User verified!")
-                if current_user.is_active == False:
-                    current_user.is_active = True
-                    current_user.save()
+                if current_user_details.is_verified == False:
+                    current_user_details.is_verified = True
                 current_user_details.otp = ''
                 current_user_details.save()
                 login(request, current_user)

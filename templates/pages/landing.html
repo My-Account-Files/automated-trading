@@ -1,13 +1,11 @@
 {% extends "pages/base.html" %}
 {% load static %}
-{% block titile %}ChatHub{% endblock titile %}
+{% block title %}Automated - Trading{% endblock title %}
+
 
 {% block body %}
 
 
-<script src={% static 'js/core.js' %}></script>
-<!DOCTYPE html>
-<html lang="en">
 
 <div class="antialiased">
     {% include "../components/landingnav.html"%}
@@ -26,7 +24,7 @@
 	<!-- C1 Container End -->
 
 	<!-- Footer Start -->
-    {% include "../components/footer.html"%}
+    {% comment %} {% include "../components/footer.html"%} {% endcomment %}
 	<!-- Footer End -->
 
 	<!-- AOS init -->
@@ -36,5 +34,7 @@
 	</script>
 </div>
 
-</html>
+
+
+
 {% endblock body %}
