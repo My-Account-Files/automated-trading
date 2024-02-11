@@ -3,7 +3,7 @@
         <div class="flex flex-row items-center justify-between py-6">
             <div class="relative md:mt-8">
                 <a href="{% url "index" %}"
-                    class="text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">Auto Trade</a>
+                    class="text-lg relative z-50 font-bold tracking-widest text-blue-500 rounded-lg focus:outline-none focus:shadow-outline">Auto Trade</a>
                 <svg class="h-11 z-40 absolute -top-2 -left-3" viewBox="0 0 79 79" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -24,7 +24,7 @@
         </div>
         <nav :class="{ 'transform md:transform-none': !open, 'h-full': open }"
             class="h-0 md:h-auto flex flex-col flex-grow md:items-center pb-4 md:pb-0 md:flex md:justify-end md:flex-row origin-top duration-300 scale-y-0">
-            <a class="px-10 py-3 mt-2 text-sm text-center bg-white rounded-full md:mt-8 md:ml-4"
+            <a class="px-10 py-3 mt-2 text-sm text-center transparent-submit-btn rounded-full md:mt-8 md:ml-4"
                 href="{% url 'signin' %}">Login</a>
             <a class="px-10 py-3 mt-2 text-sm text-center submit-btn text-white rounded-full md:mt-8 md:ml-4"
                 href="{% url 'signup' %}">Sign Up</a>
