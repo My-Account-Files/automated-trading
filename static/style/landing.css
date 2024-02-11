@@ -1,6 +1,6 @@
 /*primary color*/
 .bg-cream {
-    background-color: #FFF2E1;
+    background-color: #031f38;
 }
 
 .img-border {
@@ -15,8 +15,15 @@ body {
 .bg-yellow-500 {
     background-color: #F48C06;
 }
-.text-yellow-500 {
-    color: #F48C06;
+.text-white-500 {
+    color: white;
+}
+.text-blue-500 {
+    color: #366ddf;
+}
+
+bg-blue-500 {
+    background-color: #366ddf;
 }
 .floating { 
     animation-name: floating; 

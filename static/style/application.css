@@ -2,14 +2,25 @@
     background: linear-gradient(93deg, #8d0062 0%, #000 100%);
   }
   .background-color {
-    background-color: #FFF2E1;   
+    background-color:  #031f38;   
   }
   .submit-btn {
-    background-color: #F48C06 !important;
+    background-color: #fff !important;
+    color: #366ddf !important;
+    font-weight: 700;
+  }
+
+  .transparent-submit-btn {
+    background-color: transparent;
+    border-color: #366ddf !important;
+    color: white;
+    text-align: center;
+    border: 1px solid;
+    font-weight: 700;
   }
 
   .link-color {
-      color: #F48C06
+      color: #366ddf;
   }
   .w-100 {
       width: 100% !important;
