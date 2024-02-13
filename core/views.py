@@ -11,6 +11,8 @@ from django.conf import settings
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 
@@ -38,7 +40,28 @@ def signup(request):
 
 #  < -- Dashboard --->
 def dashboard(request):
+    return render(request, 'pages/dashboard.html')
+
+#  < -- User Settings --->
+def user_settings(request):
+    print("Request Method is:" + request.method)
+    
+    if request.method == 'GET':
+        return render(request, 'pages/settings.html')
+    elif request.method == 'POST':
+        zerodha_api_key = request.data.get('zerodha_api_key')
+        zerodha_secret_key = request.data.get('zerodha_secret_key')
+        return Response({"message": "This is a POST request"})
+
+def market_data(request):
+    return render(request, 'pages/market-data.html')
+
+def reports(request):
     return render(request, 'pages/comingsoon.html')
+
+def alerts(request):
+    return render(request, 'pages/comingsoon.html')
+    
 
 def email_exist(email):
     return User.objects.filter(email=email).exists()

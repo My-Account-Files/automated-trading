@@ -12,17 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='userdetail',
-            name='icici_key',
-            field=models.CharField(blank=True, max_length=255, null=True),
-        ),
-        migrations.AlterField(
-            model_name='userdetail',
             name='otp',
-            field=models.CharField(blank=True, max_length=255, null=True),
-        ),
-        migrations.AlterField(
-            model_name='userdetail',
-            name='zerodha_key',
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

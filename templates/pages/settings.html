@@ -1,0 +1,40 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block title %}Automated Trading Platform - Signup{% endblock title %}
+
+
+{% block body %}
+
+{% include "../components/header.html" %}
+{% include "../components/application-sidebar.html" %}
+<div class="form-container">
+    <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" id="signupform" method="POST" action="{% url "user_settings" %}">
+        {% csrf_token %}
+    <p class="text-center js-messages-field collapse text-red-500 text-sm mb-2"></p>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-center {% if message.tags == 'error' %}text-red-500{% elif message.tags == 'success' %}text-green-500{% endif %} text-sm mb-2">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}                    
+        <p class="text-center text-red-500 mb-2" id="messages"></p>
+        <!-- First and Last Name -->
+            <div class="mb-4 md:flex md:justify-between">
+                <div class="mb-4 md:mr-2 md:mb-0">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">Zerodha API Key</label>
+                    <input class="input-field" id="zerodha_api_key" name="zerodha_api_key" type="text" placeholder="zerodha api key" />
+                </div>
+            </div>
+            <div class="mb-4 md:flex md:justify-between">
+                <div class="mb-4 md:mr-2 md:mb-0">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">Zerodha Secret Key</label>
+                    <input class="input-field" id="zerodha_secret_key" name="zerodha_secret_key" type="text" placeholder="Zerodha Secret Key" />
+                </div>
+            </div>
+        
+        <!-- Submit Button -->
+        <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline submit-btn" type="submit">Update Settings</button>
+    </form>
+</div>
+{% endblock body %}
