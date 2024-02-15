@@ -1,0 +1,16 @@
+{% extends "pages/base.html" %}
+{% load static %}
+
+
+{% block body %}
+
+<div class="sidebar">
+    <ul>
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'market_data' %}">MarketData</a></li>
+        <li><a href="{% url 'reports' %}">Reports</a></li>
+        <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    </ul>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,18 @@
+{% extends "pages/base.html" %}
+{% load static %}
+
+
+{% block body %}
+
+    <div class="header">
+        <div class="logo">
+            <a href="{% url "index" %}">Auto Trade</a>
+        </div>
+        <button class="toggle-nav">&#9776;</button>
+        <nav class="nav">
+            <ul>
+                <li><a href="{% url 'user_settings' %}">settings</a></li>
+            </ul>
+        </nav>
+    </div>
+{% endblock body %}

@@ -3,6 +3,7 @@
 import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
+from django.db.models import DecimalField
 
 
 class Migration(migrations.Migration):
@@ -19,9 +20,66 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('otp', models.CharField(max_length=255)),
-                ('zerodha_key', models.CharField(max_length=255)),
-                ('icici_key', models.CharField(max_length=255)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='BrokerSettings',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('broker_name',models.CharField(max_length=255)),
+                ('api_key', models.CharField(max_length=255)),
+                ('api_secret', models.CharField(max_length=255)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='MasterInstrumentLists',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('date', models.DateTimeField(auto_now_add=True)),
+                ('instrument_token', models.CharField(max_length=255)),
+                ('exchange_token', models.CharField(max_length=255)),
+                ('exchange', models.CharField(max_length=255)),
+                ('trading_symbol', models.CharField(max_length=255)),
+                ('name', models.CharField(max_length=255)),
+                ('last_price', DecimalField(max_digits=10, decimal_places=2)),
+                ('ticket_size', DecimalField(max_digits=10, decimal_places=2)),
+                ('lot_size', models.CharField(max_length=255)),
+                ('instrument_type', models.CharField(max_length=255)),
+                ('segment', models.CharField(max_length=255)),
+                ('broker_setting', models.ForeignKey('BrokerSettings', on_delete=models.CASCADE)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='HistoricalMarketDataSettings',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('from_date', models.DateTimeField(auto_now_add=True)),
+                ('to_date', models.DateTimeField(auto_now_add=True)),
+                ('exchange', models.CharField(max_length=255)),
+                ('stock_symbol', models.CharField(max_length=255)),
+                ('resolution', models.CharField(max_length=255)),
+                ('error_message', models.CharField(max_length=255)),
+                ('timestamp', models.DateTimeField(auto_now_add=False)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('broker_setting', models.ForeignKey('BrokerSettings', on_delete=models.CASCADE)),
+            ],
+        ),
+
+        migrations.CreateModel(
+            name='HistoricalDataFiles',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now_add=True)),
+                ('file_type', models.CharField(max_length=255)),
+                ('file_path', models.CharField(max_length=255)),
+                ('file_name', models.CharField(max_length=255)),
+                ('new_file_name', models.CharField(max_length=255)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('broker_setting', models.ForeignKey('BrokerSettings', on_delete=models.CASCADE)),
+                ('historical_market_data', models.ForeignKey('HistoricalMarketDataSettings', on_delete=models.CASCADE)),
             ],
         ),
     ]
