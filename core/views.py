@@ -44,14 +44,27 @@ def dashboard(request):
 
 #  < -- User Settings --->
 def user_settings(request):
-    print("Request Method is:" + request.method)
     
     if request.method == 'GET':
         return render(request, 'pages/settings.html')
     elif request.method == 'POST':
-        zerodha_api_key = request.data.get('zerodha_api_key')
-        zerodha_secret_key = request.data.get('zerodha_secret_key')
-        return Response({"message": "This is a POST request"})
+        current_user = User.objects.get(user=request.user)
+        user_broker_settings = BrokerSettings.objects.filter(user=current_user)
+
+        if not user_broker_settings.is_exists():
+            user_broker_settings = BrokerSettings.objects.create(user_id=current_user.id)
+        zerodha_api_key = request.POST.get('zerodha_api_key')
+        zerodha_secret_key = request.POST.get('zerodha_secret_key')
+
+        if zerodha_api_key is not None and zerodha_secret_key is not None:
+          zerodha_broker_settings = BrokerSettings.objects.filter(user_id=current_user.id, broker_name="zerodha")
+        if not zerodha_broker_settings.is_exists():
+          zerodha_broker_settings = BrokerSettings.objects.create(user_id=current_user.id, api_key=zerodha_api_key, secret_key=zerodha_secret_key)
+        else:
+            zerodha_broker_settings.update()
+
+    return render(request, 'pages/settings.html')
+        
 
 def market_data(request):
     return render(request, 'pages/market-data.html')

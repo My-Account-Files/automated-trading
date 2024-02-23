@@ -26,6 +26,42 @@
       width: 100% !important;
   }
 
+  .section {
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 20px;
+  }
+  .section label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .text-field {
+    margin-bottom: 10px;
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .table-container {
+    width: 80%;
+    background-color: #fff;
+    padding-left: 10rem;
+    padding-top: 5rem;
+  }
+
   .header {
     background-color: #031f38;
     color: #fff;
