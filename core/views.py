@@ -14,7 +14,36 @@ from django.dispatch import receiver
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+#  < -- User Settings --->
+@login_required(login_url='/signin')
+def user_settings(request):
+    
+    if request.method == 'GET':
+        return render(request, 'pages/settings.html')
+    elif request.method == 'POST':
+        current_user = request.user
+        print(request.user)
+        user_broker_settings = BrokerSetting.objects.filter(user=current_user)
 
+        if not user_broker_settings.exists():
+            user_broker_settings = BrokerSetting.objects.create(user=current_user)
+        zerodha_api_key = request.POST.get('zerodha_api_key')
+        zerodha_secret_key = request.POST.get('zerodha_secret_key')
+
+        if zerodha_api_key is not None and zerodha_secret_key is not None:
+          zerodha_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="zerodha")
+        if not zerodha_broker_settings.exists():
+          zerodha_broker_settings = BrokerSetting.objects.create(user=current_user, api_key=zerodha_api_key, api_secret=zerodha_secret_key)
+        else:
+            zerodha_broker_settings.update()
+
+    return render(request, 'pages/settings.html')
+
+
+
+# <---- Dashboard --->
+def dashboard(request):
+    return render(request, 'pages/dashboard.html')
 
 #  < -- SIGN UP --->
 def signup(request):
