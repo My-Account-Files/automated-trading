@@ -21,12 +21,6 @@ def encrypt_data(data, key):
     encrypted_data = cipher.encrypt(data.encode())
     return encrypted_data
 
-def decrypt_data(encrypted_data, key):
-        cipher = Fernet(key)
-        encrypted_data = ast.literal_eval(encrypted_data) 
-        decrypted_data = cipher.decrypt(encrypted_data).decode()
-        return decrypted_data
-
 class BrokerSetting(models.Model):
     broker_name = models.CharField(max_length=255)
     api_key = models.CharField(max_length=255)
@@ -39,6 +33,11 @@ class BrokerSetting(models.Model):
     def save(self, *args, **kwargs):
         # Encrypt the field before saving
         self.api_key = encrypt_data(self.api_key, SECRET_KEY)
-        self.secret_key = encrypt_data(self.secret_key, SECRET_KEY)
+        self.api_secret = encrypt_data(self.api_secret, SECRET_KEY)
         super().save(*args, **kwargs)
+    def decrypt_data(encrypted_data, key):
+        cipher = Fernet(key)
+        encrypted_data = ast.literal_eval(encrypted_data) 
+        decrypted_data = cipher.decrypt(encrypted_data).decode()
+        return decrypted_data
     
