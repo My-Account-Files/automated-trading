@@ -8,38 +8,37 @@
 {% include "../components/header.html" %}
 {% include "../components/application-sidebar.html" %}
 <div class="form-container">
+    {% if messages %}
+        {% for message in messages %}
+            <p class="text-center {% if message.tags == 'error' %}text-red-500{% elif message.tags == 'success' %}text-green-500{% endif %} text-sm mb-2">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
     <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" id="signupform" method="POST" action="{% url "user_settings" %}">
         {% csrf_token %}
-    <p class="text-center js-messages-field collapse text-red-500 text-sm mb-2"></p>
-        {% if messages %}
-            {% for message in messages %}
-                <p class="text-center {% if message.tags == 'error' %}text-red-500{% elif message.tags == 'success' %}text-green-500{% endif %} text-sm mb-2">
-                    {{ message }}
-                </p>
-            {% endfor %}
-        {% endif %}                    
+    <p class="text-center js-messages-field collapse text-red-500 text-sm mb-2"></p>                  
         <p class="text-center text-red-500 mb-2" id="messages"></p>
-        <!-- First and Last Name -->
 
             <div class="section">
                 <div class="pl-5 pt-5">
                     <label class="block mb-2 text-lg font-bold text-gray-700" for="firstName">Zerodha Integration</label>
                     <label>
-                    <input type="radio" name="zerodha_integration" value="enabled" checked> Enabled
+                        <input type="radio" name="enable_zerodha" value="True" {% if zerodha_broker_settings and zerodha_broker_settings.enable_zerodha %}checked{% endif %}> Enabled
                     </label>
                     <label>
-                    <input type="radio" name="zerodha_integration" value="disabled"> Disabled
+                        <input type="radio" name="enable_zerodha" value="False" {% if zerodha_broker_settings and not zerodha_broker_settings.enable_zerodha %}checked{% endif %}> Disabled
                     </label>
                     <div class="mb-4 md:flex md:justify-between">
                         <div class="mb-4 md:mr-2 md:mb-0">
                             <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">Zerodha API Key</label>
-                            <input class="input-field" id="zerodha_api_key" name="zerodha_api_key" type="text" placeholder="zerodha api key" />
+                            <input class="input-field" id="zerodha_api_key" name="zerodha_api_key" type="text" placeholder={{zerodha_broker_settings.api_key}} />
                         </div>
                     </div>
                     <div class="mb-4 md:flex md:justify-between">
                         <div class="mb-4 md:mr-2 md:mb-0">
                             <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">Zerodha Secret Key</label>
-                            <input class="input-field" id="zerodha_secret_key" name="zerodha_secret_key" type="text" placeholder="Zerodha Secret Key" />
+                            <input class="input-field" id="zerodha_secret_key" name="zerodha_secret_key" type="text" placeholder={{zerodha_broker_settings.secret_key}} />
                         </div>
                     </div>
                 </div>
@@ -49,10 +48,10 @@
                 <div class="pl-5 pt-5">
                     <label class="block mb-2 text-lg font-bold text-gray-700" for="firstName">ICICI Integration</label>
                     <label>
-                    <input type="radio" name="icici_integration" value="enabled" checked> Enabled
+                    <input type="radio" name="enable_icici" value="True" checked> Enabled
                     </label>
                     <label>
-                    <input type="radio" name="icici_integration" value="disabled"> Disabled
+                    <input type="radio" name="enable_icici" value="False"> Disabled
                     </label>
                     <div class="mb-4 md:flex md:justify-between">
                         <div class="mb-4 md:mr-2 md:mb-0">
@@ -63,7 +62,7 @@
                     <div class="mb-4 md:flex md:justify-between">
                         <div class="mb-4 md:mr-2 md:mb-0">
                             <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">ICICI Secret Key</label>
-                            <input class="input-field" id="icici_secret_key" name="zerodha_secret_key" type="text" placeholder="ICICI Secret Key" />
+                            <input class="input-field" id="icici_secret_key" name="zerodha_secret_key" type="text" placeholder={{icici_broker_settings.secret_key}} />
                         </div>
                     </div>
                 </div>
@@ -85,8 +84,8 @@
       radios.forEach(radio => {
         radio.addEventListener('change', function() {
           textFields.forEach(field => {
-            if (this.value === 'enabled') {
-              field.removeAttribute('disabled');
+            if (this.value === 'True') {
+              field.removeAttribute('diabled');
             } else {
               field.setAttribute('disabled', 'true');
             }

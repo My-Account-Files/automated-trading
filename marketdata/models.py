@@ -28,6 +28,13 @@ class BrokerSetting(models.Model):
     def __str__(self):
         return self.broker_name
 
+    def save(self, *args, **kwargs):
+        # Encrypt the field before saving
+        self.api_key = encrypt_data(self.api_key, SECRET_KEY)
+        self.secret_key = encrypt_data(self.secret_key, SECRET_KEY)
+        super().save(*args, **kwargs)
+
+
 class MasterInstrumentList(models.Model):
     broker_setting = models.ForeignKey(BrokerSetting, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)

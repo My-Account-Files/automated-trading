@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import *
 # Create your views here.
 
@@ -14,23 +15,32 @@ def user_settings(request):
     if request.method == 'GET':
         return render(request, 'pages/settings.html')
     elif request.method == 'POST':
+        context={}
+        setting_updated = False
         current_user = request.user
-        print(request.user)
-        user_broker_settings = BrokerSetting.objects.filter(user=current_user)
+        broker_name = request.POST.get('broker_name')
+        broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name=broker_name).first()
 
-        if not user_broker_settings.exists():
-            user_broker_settings = BrokerSetting.objects.create(user=current_user)
-        zerodha_api_key = request.POST.get('zerodha_api_key')
-        zerodha_secret_key = request.POST.get('zerodha_secret_key')
+        api_key = request.POST.get('api_key')
+        secret_key = request.POST.get('secret_key')
 
-        if zerodha_api_key is not None and zerodha_secret_key is not None:
-          zerodha_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="zerodha")
-        if not zerodha_broker_settings.exists():
-          zerodha_broker_settings = BrokerSetting.objects.create(user=current_user, api_key=zerodha_api_key, api_secret=zerodha_secret_key)
-        else:
-            zerodha_broker_settings.update()
+        if broker_settings is None and api_key is not None and secret_key is not None:
+          zerodha_broker_settings = BrokerSetting.objects.create(user=current_user, broker_name=broker_name, api_key=api_key, api_secret=secret_key)
+          setting_updated = True
+        elif broker_settings is not None and api_key is not None and secret_key is not None:
+            broker_settings.api_key=api_key
+            broker_settings.api_secret=secret_key
+            broker_settings.save()
+            setting_updated = True
 
-    return render(request, 'pages/settings.html')
+        if bool(setting_updated):
+            messages.success(request, "Setting has been updated")
+
+        zerodha_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="zerodha").first()
+        icici_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="icici").first()
+        context= {'zerodha_broker_settings': zerodha_broker_settings, 'icici_broker_settings': icici_broker_settings}
+
+    return render(request, 'pages/settings.html', context)
         
 
 def market_data(request):
@@ -41,4 +51,16 @@ def reports(request):
 
 def alerts(request):
     return render(request, 'pages/comingsoon.html')
+
+
+
+def enable_broker_settings(broker_settings):
+    if broker_settings is None:
+        return False
+
+    if broker_setting.broker_name == "zerodha":
+        return bool(broker_settings.enable_zerodha)
+    elif broker_setting.broker_name == "icici":
+        return bool(broker_settings.enable_icici)
+
     
