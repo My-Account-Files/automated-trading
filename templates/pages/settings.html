@@ -26,12 +26,10 @@
                       {% csrf_token %}
                       <div>
                           <select name="broker_name" id="HeadlineAct" class="mt-1.5 w-full rounded-lg p-2.5 border-gray-300 text-white font-semibold sm:text-sm bg-indigo-900">
-                              <option value="">Select Broker</option>
-                              <option value="JM">John Mayer</option>
-                              <option value="SRV">Stevie Ray Vaughn</option>
-                              <option value="JH">Jimi Hendrix</option>
-                              <option value="BBK">B.B King</option>
-                              <option value="AK">Albert King</option>
+                            <option value="">Select Broker</option>
+                            {% for broker_name in disableBrokersName %}
+                              <option value="{{broker_name}}">{{broker_name}}</option>
+                            {% endfor %}
                           </select>
                       </div>
                       <div>
@@ -64,10 +62,10 @@
               <!-- Loop through your data and dynamically generate content -->
               {% for broker in brokersData %}
                   <div>
-                      <h5 class="font-bold text-indigo-900">{{ broker.name }}</h5>
+                      <h5 class="font-bold text-indigo-900">{{ broker.broker_name }}</h5>
                       <div class="relative">
-                          <input class="text-xs font-medium text-gray-600">Secret key: {{ broker.secretKey }}</input>
-                          <input class="text-xs font-medium text-gray-600">Secret Access key: {{ broker.secretAccessKey }}</input>
+                          <input class="text-xs font-medium text-gray-600">Secret key: {{ broker.api_key }}</input>
+                          <input class="text-xs font-medium text-gray-600">Secret Access key: {{ broker.api_secret }}</input>
                       </div>
                   </div>
               {% endfor %}
