@@ -8,13 +8,14 @@
 {% include "../components/application-sidebar.html" %}
 <div class="form-container flex h-screen md:w-screen">
     <div class="flex flex-col mx-auto">
-        <!-- Buttons for Zerodha Integration -->
-        <div class="mt-5 mb-3">
-            <a href="#" id="addKeyBtn" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
-                Add New Key
-            </a>
-        </div>
-
+        {% if  disableBrokersName %}
+            <!-- Buttons for Zerodha Integration -->
+            <div class="mt-5 mb-3">
+                <a href="#" id="addKeyBtn" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
+                    Add New Key
+                </a>
+            </div>  
+        {% endif %}
         <!-- Add New Key Section -->
         <div id="addKeySection" class="hidden mb-8 w-full lg:w-[35rem] p-0 bg-white border border-gray-200 rounded-lg shadow " x-data="{ open: false, selectedBrokers: [] }">
             <!-- Add your content for Add New Key section here -->
@@ -26,19 +27,17 @@
                       {% csrf_token %}
                       <div>
                           <select name="broker_name" id="HeadlineAct" class="mt-1.5 w-full rounded-lg p-2.5 border-gray-300 text-white font-semibold sm:text-sm bg-indigo-900">
-                              <option value="">Select Broker</option>
-                              <option value="JM">John Mayer</option>
-                              <option value="SRV">Stevie Ray Vaughn</option>
-                              <option value="JH">Jimi Hendrix</option>
-                              <option value="BBK">B.B King</option>
-                              <option value="AK">Albert King</option>
+                            <option value="">Select Broker</option>
+                            {% for broker_name in disableBrokersName %}
+                              <option value="{{broker_name}}">{{broker_name}}</option>
+                            {% endfor %}
                           </select>
                       </div>
                       <div>
-                          <input type="text" name="secret_key" id="secretkey" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter your secret key" required />
+                          <input type="text" name="api_key" id="secretkey" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter your secret key" required />
                       </div>
                       <div>
-                          <input type="text" name="secret_access_key" id="secretaccess" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter secret access key" required />
+                          <input type="text" name="secret_key" id="secretaccess" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter secret access key" required />
                       </div>
                       <button type="submit" class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white">
                           Add Key
@@ -48,40 +47,63 @@
             </div>
         </div>
         
-        <!-- Brokers List Section -->
 <!-- Brokers List Section -->
-<div id="brokersListSection" class="hidden w-full lg:w-[35rem] bg-white border border-gray-200 rounded-lg shadow ">
-    <!-- Content for Brokers List section -->
-    <div class="bg-white border border-gray-200 rounded-lg shadow p-5">
-        <svg class="space-y-2 w-7 h-7 text-indigo-900 mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"/>
-        </svg>
-        <a href="#">
-            <h5 class="space-y-2 mb-2 text-3xl font-bold tracking-tight text-indigo-900 ">Broker List</h5>
+<div id="brokersListSection" class="hidden w-full lg:w-[35rem] mt-10 bg-white border border-gray-200 rounded-lg shadow ">
+
+  <!-- Add your content for Brokers List section here -->
+  <div class="bg-white border border-gray-200 rounded-lg shadow p-5">
+      <svg class="space-y-2 w-7 h-7 text-indigo-900  mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"/>
+      </svg>
+      <a href="#">
+          <h5 class="space-y-2 mb-2 text-3xl font-bold tracking-tight text-indigo-900 ">Broker List</h5>
+      </a>
+
+      <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" id="signupform" method="POST" action="{% url "user_settings" %}">
+        {% csrf_token %}
+
+        <div class="flex flex-col items-start space-y-2">
+              <!-- Loop through your data and dynamically generate content -->
+              {% for broker in brokersData %}
+    <div class="relative">
+        <h5 class="font-bold text-indigo-900 text-2xl mb-2">Broker Name : {{ broker.broker_name }}</h5>
+        <div class="flex-col">
+            <input type="hidden" name="broker_name" value="{{ broker.broker_name }}">
+            
+            <div class="relative">
+                <span>Secret Key : </span>
+            <input type="text" name="api_key" id="" class="text-xs font-medium text-gray-600 bg-blue-200 p-2 rounded-lg mb-2" value="{{ broker.api_key }}" >
+
+            
+            
+            <!-- Repeat for the second input field -->
+            
+            
+            
+            <br/>
+            
+            <span>Secret Access Key : </span>
+            <input type="text" name="secret_key" id="" class="text-xs font-medium text-gray-600 bg-blue-200 p-2 rounded-lg" value="{{ broker.api_secret }}" readOnly>
+            
+        </div>
+            
+        </div>
+    </div>
+{% endfor %}
+    <div class="mt-5 mb-3">
+        <a href="#" id="" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
+  Update
         </a>
-  
-        <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" id="brokersListForm" >
-            {% csrf_token %}
-            <div class="flex flex-col items-start space-y-2">
-                <!-- Dynamically generate broker details -->
-                {% for broker in brokersData %}
-                    <div class="mb-4">
-                        <h5 class="font-bold text-indigo-900 text-2xl">Broker Name : {{ broker.name }}</h5>
-                        <div class="flex flex-col space-y-2">
-                            <input type="text" name="{{ broker.name }}_secret_key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Secret Key " value="{{ broker.secretKey }}" required>
-                            <input type="text" name="{{ broker.name }}_secret_access_key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Secret Access Key" value="{{ broker.secretAccessKey }}" required>
-                        </div>
-                    </div>
-                {% endfor %}
-              </div>
-              <button type="submit" class="block  rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white">
-                  Update 
-              </button>
-            </form>
-          </div>
+    </div> 
+    
+        
+              <!-- You can include additional form elements related to the Brokers List section if needed -->
+            </div>
+          </form>
         </div>
 
 <script>
+   
     // Function to toggle sections
     function toggleSection(showSectionId) {
         // Hide both sections initially
@@ -111,6 +133,7 @@
         event.preventDefault(); // Prevent default action
         toggleSection('addKeySection'); // Show "Add New Key" section
     });
+    
 </script>
 
 

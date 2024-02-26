@@ -24,6 +24,7 @@ def user_settings(request):
     current_user = request.user
     if request.method == 'GET':
         broker_setting_enabled("zerodha", current_user, context)
+        broker_setting_enabled("icici", current_user, context)
         return render(request, 'pages/settings.html', context)
     elif request.method == 'POST':
         setting_updated = False
@@ -150,9 +151,13 @@ def index(request):
 
 
 def broker_setting_enabled(broker_name, current_user, context):
-   broker_setting = BrokerSetting.objects.filter(user=current_user, broker_name=broker_name).first()
-   if broker_setting is not None:
-      context["brokersData"].append(broker_setting)
+    broker_setting = BrokerSetting.objects.filter(user=current_user, broker_name=broker_name).first()
+    if broker_setting is not None:
+        broker_setting.api_key = BrokerSetting.decrypt_data(broker_setting.api_key, b'g6stRwKJ9xVVWhmUh8p8AuyCJdPS8XrTXqfcYG9DEOQ=')
+        broker_setting.api_secret = BrokerSetting.decrypt_data(broker_setting.api_secret, b'g6stRwKJ9xVVWhmUh8p8AuyCJdPS8XrTXqfcYG9DEOQ=')
+        context["brokersData"].append(broker_setting)
+    else:
+        context["disableBrokersName"].append(broker_name)
 
 @receiver(post_save, sender=User)
 def create_userdetails(sender, instance, created, **kwargs):
