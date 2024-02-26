@@ -1,10 +1,17 @@
 {% extends "pages/base.html" %}
 {% load static %}
 {% block title %}Market Data{% endblock title %}
-
 {% block body %}
 
 {% include "../components/application-sidebar.html" %}
 
+<div class="p-4 sm:ml-64">
+    <button class="mt-5">
+        <a href="{% url "market_data_form" %}" id="" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
+            Create Market Data
+        </a>
+    </button>
+    <h2> Hello market data </h2>
+</div>
 
 {% endblock body %}
