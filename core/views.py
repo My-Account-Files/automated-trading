@@ -17,28 +17,37 @@ from rest_framework.response import Response
 #  < -- User Settings --->
 @login_required(login_url='/signin')
 def user_settings(request):
-    
+
+    context={ "brokersData": [], "disableBrokersName": [] }
+    current_user = request.user
     if request.method == 'GET':
-        return render(request, 'pages/settings.html')
+        broker_setting_enabled("zerodha", current_user, context)
+        return render(request, 'pages/settings.html', context)
     elif request.method == 'POST':
-        current_user = request.user
-        print(request.user)
-        user_broker_settings = BrokerSetting.objects.filter(user=current_user)
+        setting_updated = False
+        broker_name = request.POST.get('broker_name')
+        broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name=broker_name).first()
 
-        if not user_broker_settings.exists():
-            user_broker_settings = BrokerSetting.objects.create(user=current_user)
-        zerodha_api_key = request.POST.get('zerodha_api_key')
-        zerodha_secret_key = request.POST.get('zerodha_secret_key')
+        api_key = request.POST.get('api_key')
+        secret_key = request.POST.get('secret_key')
 
-        if zerodha_api_key is not None and zerodha_secret_key is not None:
-          zerodha_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="zerodha")
-        if not zerodha_broker_settings.exists():
-          zerodha_broker_settings = BrokerSetting.objects.create(user=current_user, api_key=zerodha_api_key, api_secret=zerodha_secret_key)
-        else:
-            zerodha_broker_settings.update()
+        if broker_settings is None and api_key is not None and secret_key is not None:
+          broker_settings = BrokerSetting.objects.create(user=current_user, broker_name=broker_name, api_key=api_key, api_secret=secret_key)
+          setting_updated = True
+        elif broker_settings is not None and api_key is not None and secret_key is not None:
+            broker_settings.api_key=api_key
+            broker_settings.api_secret=secret_key
+            broker_settings.save()
+            setting_updated = True
 
-    return render(request, 'pages/settings.html')
+        if bool(setting_updated):
+            messages.success(request, "Setting has been updated")
 
+        zerodha_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="zerodha").first()
+        icici_broker_settings = BrokerSetting.objects.filter(user=current_user, broker_name="icici").first()
+        context= {'zerodha_broker_settings': zerodha_broker_settings, 'icici_broker_settings': icici_broker_settings}
+
+    return render(request, 'pages/settings.html', context)
 
 
 # <---- Dashboard --->
@@ -47,7 +56,7 @@ def dashboard(request):
 
 #  < -- SIGN UP --->
 def signup(request):
-    context={}
+    context={ }
     if request.method == 'POST':
         email = request.POST.get('email')
         username = email.split('@')[0]
@@ -138,6 +147,10 @@ def index(request):
     return render(request, 'pages/landing.html')
 
 
+def broker_setting_enabled(broker_name, current_user, context):
+   broker_setting = BrokerSetting.objects.filter(user=current_user, broker_name=broker_name).first()
+   if broker_setting is not None:
+      context["brokersData"].append(broker_setting)
 
 @receiver(post_save, sender=User)
 def create_userdetails(sender, instance, created, **kwargs):
