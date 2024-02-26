@@ -6,5 +6,186 @@
 
 {% include "../components/application-sidebar.html" %}
 
+<div class="p-4 sm:ml-64">
+  <div class="flex items-center  justify-center h-screen">
+    <div class="w-[30rem]">
+      <h2 class="sr-only">Steps</h2>
+
+      <div class="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg after:bg-gray-100">
+        <ol class="relative z-10 flex justify-between text-sm font-medium text-gray-500">
+          <li class="flex items-center gap-2 p-2 step-item" data-step="1">
+            <span class="size-6 rounded-full bg-blue-600 text-center text-[10px]/6 font-bold step-number text-white"> 1 </span>
+            <span class="hidden sm:block ">Step </span>
+          </li>
+
+          <li class="flex items-center gap-2 p-2 step-item" data-step="2">
+            <span class="size-6 rounded-full bg-gray-100 text-center text-[10px]/6 font-bold step-number"> 2 </span>
+            <span class="hidden sm:block"> Step </span>
+          </li>
+
+          <li class="flex items-center gap-2 p-2 step-item" data-step="3">
+            <span class="size-6 rounded-full bg-gray-100 text-center text-[10px]/6 font-bold step-number"> 3 </span>
+            <span class="hidden sm:block"> Step </span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="mt-4">
+        <div class="step-content" data-step="1">
+          <!-- Step 1 Content -->
+          <div class=" mb-8 w-full lg:w-[30rem] p-0 bg-white border border-gray-200 rounded-lg shadow ">
+          <div class="px-4 py-16 sm:px-6 lg:px-8">
+            <div class="">
+                <h1 class="text-center text-2xl font-bold text-indigo-900 sm:text-3xl">Choose a Broker</h1>
+            
+                <form id="addKeyForm" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8" method="POST">
+                  {% csrf_token %}
+                  <div>
+                      <select name="broker_name" id="HeadlineAct" class="mt-1.5 w-full rounded-lg p-2.5 border-gray-300 text-white font-semibold sm:text-sm bg-indigo-900">
+                          <option value="">Select Broker</option>
+                          <option value="JM">John Mayer</option>
+                          <option value="SRV">Stevie Ray Vaughn</option>
+                          <option value="JH">Jimi Hendrix</option>
+                          <option value="BBK">B.B King</option>
+                          <option value="AK">Albert King</option>
+                      </select>
+                  </div>
+                  
+              </form>
+            </div>
+        
+        </div></div>
+    </div>
+
+        <div class="step-content hidden" data-step="2">
+          <!-- Step 2 Content -->
+          <div class=" w-full lg:w-[38rem] p-0 bg-white border border-gray-200 rounded-lg shadow ">
+            <div class="px-4 py-16 sm:px-6 lg:px-8">
+                <h1 class="text-center text-2xl font-bold text-indigo-900 sm:text-3xl mb-10">Choose</h1>
+                
+                
+
+
+
+                
+                
+                
+          
+        </div>
+        </div>
+          </div>
+
+        <div class="step-content hidden" data-step="3">
+          <!-- Step 3 Content -->
+          
+<div date-rangepicker class="flex items-center">
+    <div class="relative">
+      <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+           <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+          </svg>
+      </div>
+      <input name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+    </div>
+    <span class="mx-4 text-gray-500">to</span>
+    <div class="relative">
+      <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+           <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+          </svg>
+      </div>
+      <input name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+  </div>
+  </div>
+  </div>
+      </div>
+
+      <button id="nextBtn" class="mt-4 p-2 bg-blue-600 text-white rounded-md px-10">Next</button>
+      <button id="doneBtn" class="mt-4 p-2 bg-green-600 text-white rounded-md hidden px-10">Done</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const stepItems = document.querySelectorAll('.step-item');
+      const stepContents = document.querySelectorAll('.step-content');
+      const stepNumbers = document.querySelectorAll('.step-number');
+      const nextBtn = document.getElementById('nextBtn');
+      const doneBtn = document.getElementById('doneBtn');
+
+      let currentStep = 1;
+
+      nextBtn.addEventListener('click', function () {
+        if (currentStep < stepItems.length) {
+          stepItems[currentStep - 1].classList.remove('bg-blue-600', 'text-white');
+          stepItems[currentStep - 1].classList.add('text-green-600', 'text-green-600');
+
+          stepNumbers[currentStep - 1].classList.remove('bg-gray-100');
+          stepNumbers[currentStep - 1].classList.add('bg-green-600', 'text-white');
+
+          stepContents[currentStep - 1].classList.add('hidden');
+          stepItems[currentStep].classList.add('bg-green-600', 'bg-white');
+          stepItems[currentStep].classList.remove('bg-green-600');
+
+          stepNumbers[currentStep].classList.remove('bg-green-600', 'text-white');
+          stepNumbers[currentStep].classList.add('bg-green-600','text-white');
+
+          stepContents[currentStep].classList.remove('hidden');
+
+          currentStep++;
+        }
+
+        if (currentStep === stepItems.length) {
+          nextBtn.classList.add('hidden');
+          doneBtn.classList.remove('hidden');
+        }
+      });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        // Number of total items and items per page
+        const totalItems = 12;
+        const itemsPerPage = 6;
+      
+        // Calculate total number of pages
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+      
+        // Get the pagination element
+        const paginationElement = document.getElementById("pagination");
+      
+        // Generate pagination links
+        for (let i = 1; i <= totalPages; i++) {
+          const li = document.createElement("li");
+      
+          if (i === 1) {
+            li.innerHTML = `
+              <a href="#" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+                <span class="sr-only">Prev Page</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </a>
+            `;
+          } else if (i === totalPages) {
+            li.innerHTML = `
+              <a href="#" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+                <span class="sr-only">Next Page</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </a>
+            `;
+          } else {
+            li.innerHTML = `
+              <a href="#" class="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900">
+                ${i}
+              </a>
+            `;
+          }
+      
+          paginationElement.appendChild(li);
+        }
+      });
+  </script>
+</div>
 
 {% endblock body %}
