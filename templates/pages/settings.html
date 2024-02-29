@@ -1,23 +1,25 @@
 {% extends "pages/base.html" %}
 {% load static %}
+
 {% block title %}Automated Trading Platform - Signup{% endblock title %}
 
 {% block body %}
 
 {% include "../components/application-sidebar.html" %}
-<div class="form-container flex  h-screen md:w-screen">
-    <div class="flex flex-col  mx-auto">
-        <!-- Buttons for Zerodha Integration -->
-        <div class="mt-5 mb-3">
-            <a href="#" id="addKeyBtn" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
-                Add New Key
-            </a>
-        </div>
-
+<div class="form-container flex h-screen md:w-screen">
+    <div class="flex flex-col mx-auto">
+        {% if  disableBrokersName %}
+            <!-- Buttons for Zerodha Integration -->
+            <div class="mt-5 mb-3">
+                <a href="#" id="addKeyBtn" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
+                    Add New Key
+                </a>
+            </div>  
+        {% endif %}
         <!-- Add New Key Section -->
         <div id="addKeySection" class="hidden mb-8 w-full lg:w-[35rem] p-0 bg-white border border-gray-200 rounded-lg shadow " x-data="{ open: false, selectedBrokers: [] }">
             <!-- Add your content for Add New Key section here -->
-            <div class="  px-4 py-16 sm:px-6 lg:px-8">
+            <div class="px-4 py-16 sm:px-6 lg:px-8">
                 <div class="">
                     <h1 class="text-center text-2xl font-bold text-indigo-900 sm:text-3xl">Add New Key</h1>
                 
@@ -25,20 +27,17 @@
                       {% csrf_token %}
                       <div>
                           <select name="broker_name" id="HeadlineAct" class="mt-1.5 w-full rounded-lg p-2.5 border-gray-300 text-white font-semibold sm:text-sm bg-indigo-900">
-                              <option value="">Select Broker</option>
-                              <option value="">Select Broker</option>
-                              <option value="JM">John Mayer</option>
-                              <option value="SRV">Stevie Ray Vaughn</option>
-                              <option value="JH">Jimi Hendrix</option>
-                              <option value="BBK">B.B King</option>
-                              <option value="AK">Albert King</option>
+                            <option value="">Select Broker</option>
+                            {% for broker_name in disableBrokersName %}
+                              <option value="{{broker_name}}">{{broker_name}}</option>
+                            {% endfor %}
                           </select>
                       </div>
                       <div>
-                          <input type="text" name="secret_key" id="secretkey" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter your secret key" required />
+                          <input type="text" name="api_key" id="secretkey" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter your secret key" required />
                       </div>
                       <div>
-                          <input type="text" name="secret_access_key" id="secretaccess" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter secret access key" required />
+                          <input type="text" name="secret_key" id="secretaccess" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter secret access key" required />
                       </div>
                       <button type="submit" class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white">
                           Add Key
@@ -48,12 +47,11 @@
             </div>
         </div>
         
-        <!-- Brokers List Section -->
-        <!-- Brokers List Section -->
-        <!-- Brokers List Section -->
-<div id="brokersListSection" class="hidden w-full lg:w-[35rem] bg-white border border-gray-200 rounded-lg shadow ">
+<!-- Brokers List Section -->
+<div id="brokersListSection" class="hidden w-full lg:w-[35rem] mt-10 bg-white border border-gray-200 rounded-lg shadow ">
+
   <!-- Add your content for Brokers List section here -->
-  <div class="bg-white border border-gray-200 rounded-lg shadow ">
+  <div class="bg-white border border-gray-200 rounded-lg shadow p-5">
       <svg class="space-y-2 w-7 h-7 text-indigo-900  mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"/>
       </svg>
@@ -62,125 +60,122 @@
       </a>
 
       <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" id="signupform" method="POST" action="{% url "user_settings" %}">
-          <div class="flex flex-col items-start space-y-2">
+        {% csrf_token %}
+
+        <div class="flex flex-col items-start space-y-2">
               <!-- Loop through your data and dynamically generate content -->
               {% for broker in brokersData %}
-                  <div>
-                      <h5 class="font-bold text-indigo-900">{{ broker.name }}</h5>
-                      <div class="relative">
-                          <p class="text-xs font-medium text-gray-300">Secret key: {{ broker.secretKey }}</p>
-                          <p class="text-xs font-medium text-gray-300">Secret Access key: {{ broker.secretAccessKey }}</p>
-                      </div>
-                  </div>
-              {% endfor %}
-
-              <!-- Add the update button at the end of the list -->
+    <div class="relative">
+        <h5 class="font-bold text-indigo-900 text-2xl mb-2">Broker Name : {{ broker.broker_name }}</h5>
+        <div class="flex-col">
+            <input type="hidden" name="broker_name" value="{{ broker.broker_name }}">
+            
+            <div class="relative">
+                <span>Secret Key : </span>
+            <input id="api_key_{{ forloop.counter }}" type="password"  name="api_key" id="" class="text-xs font-medium text-gray-600 bg-blue-200 p-2 rounded-lg mb-2" value="{{ broker.api_key }}" >
+            <div class="absolute inset-y-0 right-2 md:right-14 pr-3 flex items-center text-sm leading-5">
+                <button type="button" id="toggleApiKey_{{ forloop.counter }}" class="text-gray-500 focus:outline-none focus:text-gray-600 hover:text-gray-600 mb-10 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 4.998c-1.836 0-3.356.389-4.617.971L3.707 2.293 2.293 3.707l3.315 3.316c-2.613 1.952-3.543 4.618-3.557 4.66l-.105.316.105.316C2.073 12.382 4.367 19 12 19c1.835 0 3.354-.389 4.615-.971l3.678 3.678 1.414-1.414-3.317-3.317c2.614-1.952 3.545-4.618 3.559-4.66l.105-.316-.105-.316c-.022-.068-2.316-6.686-9.949-6.686zM4.074 12c.103-.236.274-.586.521-.989l5.867 5.867C6.249 16.23 4.523 13.035 4.074 12zm9.247 4.907-7.48-7.481a8.138 8.138 0 0 1 1.188-.982l8.055 8.054a8.835 8.835 0 0 1-1.763.409zm3.648-1.352-1.541-1.541c.354-.596.572-1.28.572-2.015 0-.474-.099-.924-.255-1.349A.983.983 0 0 1 15 11a1 1 0 0 1-1-1c0-.439.288-.802.682-.936A3.97 3.97 0 0 0 12 7.999c-.735 0-1.419.218-2.015.572l-1.07-1.07A9.292 9.292 0 0 1 12 6.998c5.351 0 7.425 3.847 7.926 5a8.573 8.573 0 0 1-2.957 3.557z"></path></svg>                        
+                </button>
             </div>
             
-            <!-- Your existing form code goes here -->
-            <!-- You can include additional form elements related to the Brokers List section if needed -->
+            
+            <!-- Repeat for the second input field -->
+            
+            
+            
+            <br/>
+            
+            <span>Secret Access Key : </span>
+            <input name="secret_key" id="secret_key_{{ forloop.counter }}" type="password" class="text-xs font-medium text-gray-600 bg-blue-200 p-2 rounded-lg" value="{{ broker.api_secret }}" >
+            <div class="absolute inset-y-0  right-2 md:right-0  pr-3 flex items-center text-sm leading-5 mt-[5.5rem] md:mt-10">
+                <button type="button" id="toggleSecretKey_{{ forloop.counter }}" class="text-gray-500 focus:outline-none focus:text-gray-600 hover:text-gray-600  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 4.998c-1.836 0-3.356.389-4.617.971L3.707 2.293 2.293 3.707l3.315 3.316c-2.613 1.952-3.543 4.618-3.557 4.66l-.105.316.105.316C2.073 12.382 4.367 19 12 19c1.835 0 3.354-.389 4.615-.971l3.678 3.678 1.414-1.414-3.317-3.317c2.614-1.952 3.545-4.618 3.559-4.66l.105-.316-.105-.316c-.022-.068-2.316-6.686-9.949-6.686zM4.074 12c.103-.236.274-.586.521-.989l5.867 5.867C6.249 16.23 4.523 13.035 4.074 12zm9.247 4.907-7.48-7.481a8.138 8.138 0 0 1 1.188-.982l8.055 8.054a8.835 8.835 0 0 1-1.763.409zm3.648-1.352-1.541-1.541c.354-.596.572-1.28.572-2.015 0-.474-.099-.924-.255-1.349A.983.983 0 0 1 15 11a1 1 0 0 1-1-1c0-.439.288-.802.682-.936A3.97 3.97 0 0 0 12 7.999c-.735 0-1.419.218-2.015.572l-1.07-1.07A9.292 9.292 0 0 1 12 6.998c5.351 0 7.425 3.847 7.926 5a8.573 8.573 0 0 1-2.957 3.557z"></path></svg>                        
+                </button>
+            </div>
+        </div>
+            
+        </div>
+    </div>
+{% endfor %}
+    <div class="mt-5 mb-3">
+        <a href="#" id="" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
+  Update
+        </a>
+    </div> 
+    
+        
+              <!-- You can include additional form elements related to the Brokers List section if needed -->
+            </div>
           </form>
         </div>
-      </div>
-      <div class="mt-5">
-          <a href="#" id="" class="inline-block rounded bg-indigo-900 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-900">
-              Update
-          </a>
-      </div>
 
-      
+<script>
+   
+    const togglePassword = (passwordInputId) => {
+        const passwordInput = document.getElementById(passwordInputId);
 
-        <script>
-            // Function to toggle sections
-            function toggleSection(showSectionId) {
-                // Hide both sections initially
-                document.getElementById('addKeySection').style.display = 'none';
-                document.getElementById('brokersListSection').style.display = 'none';
-          
-                // Show the requested section
-                document.getElementById(showSectionId).style.display = 'block';
-          
-                // Show Brokers List section if Add New Key section is shown
-                if (showSectionId === 'addKeySection') {
-                  document.getElementById('brokersListSection').style.display = 'block';
-                }
-          
-                // Scroll to the requested section
-                document.getElementById(showSectionId).scrollIntoView({ behavior: 'smooth' });
-            }
-          
-            // Show Brokers List section on page load
-            window.addEventListener('load', function() {
-                // You can fetch the data from your API here and update the Brokers List section
-                // For the sake of example, let's assume you have an array of data
-                const brokersData = [
-                  { name: 'Broker1', secretKey: 'ABC123', secretAccessKey: 'XYZ456' },
-                  { name: 'Broker2', secretKey: 'DEF789', secretAccessKey: 'UVW123' },
-                  // Add more data as needed
-                ];
+        // Toggle password visibility
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+    };
 
-                // Update the content of the Brokers List section
-                const brokersListSection = document.getElementById('brokersListSection');
-                brokersListSection.innerHTML = ''; // Clear existing content
-
-                brokersData.forEach(broker => {
-                  const brokerCard = document.createElement('div');
-                  brokerCard.className = ' p-6 bg-white border border-gray-200 rounded-lg shadow ';
-
-                  brokerCard.innerHTML = `
-                    <h5 class="mb-2 text-3xl font-bold tracking-tight text-indigo-900 ">Broker Name: ${broker.name}</h5>
-                    <div class=" items-center gap-4">
-                      <div>
-                        <strong class="font-medium text-indigo-900">Secret key</strong>
-                        <p class=" px-10 py-2 rounded-full bg-indigo-900 mt-1 text-xs font-medium text-white">${broker.secretKey}</p>
-                      </div>
-                      <div>
-                        <strong class="font-medium text-indigo-900">Secret Access key</strong>
-                        <p class="mt-1 px-10  py-2 rounded-full bg-indigo-900 text-xs font-medium text-white">${broker.secretAccessKey}</p>
-                      </div>
-                    </div>
-                    
-                  `;
-
-                  brokersListSection.appendChild(brokerCard);
-                });
-
-                toggleSection('brokersListSection');
+    // Function to attach event listeners for toggle buttons
+    const attachToggleListeners = (brokerCount) => {
+        for (let i = 1; i <= brokerCount; i++) {
+            const apiKeyToggleBtn = document.getElementById(`toggleApiKey_${i}`);
+            const secretKeyToggleBtn = document.getElementById(`toggleSecretKey_${i}`);
+    
+            apiKeyToggleBtn.addEventListener('click', () => {
+                console.log(`API Key Toggle Button ${i} clicked`);
+                togglePassword(`api_key_${i}`);
             });
-
-            document.getElementById('addKeyBtn').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default action
-                toggleSection('addKeySection'); // Show "Add New Key" section
+    
+            secretKeyToggleBtn.addEventListener('click', () => {
+                console.log(`Secret Key Toggle Button ${i} clicked`);
+                togglePassword(`secret_key_${i}`);
             });
+        }
+    };
+    attachToggleListeners({{ brokersData|length|default:0 }});
+    
+// Function to toggle sections
+    function toggleSection(showSectionId) {
+        // Hide both sections initially
+        document.getElementById('addKeySection').style.display = 'none';
+        document.getElementById('brokersListSection').style.display = 'none';
 
-            // Handle "Add New Key" form submission with AJAX
-            document.getElementById('addKeyForm').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission
+        // Show the requested section
+        document.getElementById(showSectionId).style.display = 'block';
 
-                var formData = new FormData(this);
+        // Show Brokers List section if Add New Key section is shown
+        if (showSectionId === 'addKeySection') {
+            document.getElementById('brokersListSection').style.display = 'block';
+        }
 
-                fetch("{% url 'user_settings' %}", {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    credentials: 'same-origin'
-                }).then(response => response.json())
-                .then(data => {
-                    console.log(data); // Handle response data
-                    // Display success message and hide the form
-                    const successMessage = document.createElement('p');
-                    successMessage.textContent = 'Congratulations, you added a new key!';
-                    successMessage.style.color = 'green'; // Example styling; adjust as needed
-                    document.getElementById('addKeySection').innerHTML = ''; // Clear the "Add New Key" section
-                    document.getElementById('addKeySection').appendChild(successMessage); // Add success message
-                }).catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-        </script>
-    </div>
-</div>
+        // Scroll to the requested section with a slight delay
+        setTimeout(function() {
+            document.getElementById(showSectionId).scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+
+    // Show Brokers List section on page load
+    window.addEventListener('load', function() {
+        toggleSection('brokersListSection');
+    });
+
+    document.getElementById('addKeyBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default action
+        toggleSection('addKeySection'); // Show "Add New Key" section
+    });
+    attachToggleListeners({{ brokersData|length }});
+
+    document.getElementById('addKeyBtn').addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default action
+        toggleSection('addKeySection'); // Show "Add New Key" section
+    });
+</script>
+
+
 
 {% endblock body %}
