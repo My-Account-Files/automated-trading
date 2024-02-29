@@ -39,5 +39,4 @@ class BrokerSetting(models.Model):
         cipher = Fernet(key)
         encrypted_data = ast.literal_eval(encrypted_data) 
         decrypted_data = cipher.decrypt(encrypted_data).decode()
-        return decrypted_data
-    
+        return decrypted_data    

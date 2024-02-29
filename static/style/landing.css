@@ -12,19 +12,6 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.bg-yellow-500 {
-    background-color: #F48C06;
-}
-.text-white-500 {
-    color: white;
-}
-.text-blue-500 {
-    color: #366ddf;
-}
-
-bg-blue-500 {
-    background-color: #366ddf;
-}
 .floating { 
     animation-name: floating; 
     animation-duration: 3s; 
